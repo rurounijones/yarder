@@ -16,3 +16,6 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+# Dummy App logs
+test/dummy/log/*.log
