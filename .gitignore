@@ -19,3 +19,6 @@ doc/
 
 # Dummy App logs
 test/dummy/log/*.log
+
+# Rubymine files
+.idea
