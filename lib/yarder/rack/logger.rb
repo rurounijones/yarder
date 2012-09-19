@@ -4,8 +4,8 @@ module Yarder
 
     class Logger
 
-      def initialize(app)
-        @app = app
+      def initialize(app, tags = nil)
+        @app, @tags = app, tags.presence
       end
 
       def call(env)
@@ -18,6 +18,20 @@ module Yarder
         event.fields['path'] = request.filtered_path
         event.source = "http://#{Socket.gethostname}#{request.filtered_path}"
         event.type = "rails_json_log"
+
+        if @tags
+          @tags.each do |tag|
+            case tag
+            when Symbol
+              event.fields[tag.to_s] = request.send(tag)
+            when Proc
+              event.tags << tag.call(request)
+            else
+              event.tags << tag
+            end
+          end
+        end
+
 
         Yarder.log_entries[Thread.current] = event
 
@@ -49,6 +63,8 @@ module Yarder
 
         Yarder.log_entries[Thread.current] = nil
       end
+
+
 
 
     end

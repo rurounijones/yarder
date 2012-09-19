@@ -13,7 +13,7 @@ module Yarder
   class Railtie < Rails::Railtie
 
     initializer "yarder.swap_rack_logger_middleware" do |app|
-      app.middleware.swap(Rails::Rack::Logger, Yarder::Rack::Logger)
+      app.middleware.swap(Rails::Rack::Logger, Yarder::Rack::Logger, app.config.log_tags)
     end
 
     # We need to do the following in an after_initialize block to make sure we get all the
