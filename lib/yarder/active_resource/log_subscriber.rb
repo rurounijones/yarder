@@ -16,7 +16,7 @@ module Yarder
         request_entry['code'] = result.code
         request_entry['message'] = result.message
         request_entry['length'] = result.length
-        request_entry['duration'] = event_duration
+        request_entry['duration'] = event.duration
 
         entry.fields['active_resource'] << request_entry
       end
