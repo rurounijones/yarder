@@ -30,4 +30,11 @@ $ gem install yarder
 ```
 
 This Gem currently requires the logstash-event gem to be installed on your system. This is currently 
-not in rubygems so you will have to build it from source (See the Logstash repository)
+not in rubygems so has been added to the vendor directory for the moment.
+
+For developers, after checking out this repository please run
+
+```
+git submodule init
+git submodule update
+```
