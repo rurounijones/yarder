@@ -27,7 +27,7 @@ module Yarder
     # We need to do the following in an after_initialize block to make sure we get all the
     # subscribers. Ideally rails would allow us the ability to stop the LogSubscribers from
     # registering themselves using a config option.
-    config.after_initialize do |app|
+    config.after_initialize do
 
       # Kludge the removal of the default LogSubscribers for the moment. We will use the yarder
       # LogSubscribers (since they subscribe to the same hooks in the public methods) to create
