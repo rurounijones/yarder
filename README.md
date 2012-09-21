@@ -26,6 +26,31 @@ bundle
 bundle package --all
 ```
 
+## Logstash Configuration
+
+Yarder currently creates log entries with a hard-coded logtype of "rails_json_log" (This may change 
+in future and may become configurable) therefore your Logstash configuration file should be as 
+follows:
+
+```
+input {
+  file {
+    type => "rails_json_log"
+    path => "/var/www/rails/application-1/log/production.log" # Path to your log file
+    format => "json_event"
+  }
+}
+```
+
+You will need to edit the path to point to your application's log file. Because Yarder creates json 
+serialized Logstash::Event entries there is no need to setup any filters
+
+### Known issues
+
+Yarder currently creates nested JSON. While this is supported in Logstash and Elastic Search the web 
+interfaces do not as yet support it. Depending on whether support is possible or not Yarder may 
+change to a non-nested format.
+
 ## Developers
 
 For developers, after checking out this repository please run
