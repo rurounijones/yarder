@@ -9,6 +9,8 @@ module Yarder
       end
 
       def call(env)
+
+        t1 = Time.now
         request = ActionDispatch::Request.new(env)
 
         event = LogStash::Event.new
@@ -42,10 +44,13 @@ module Yarder
         [status, headers, response]
 
       ensure
-
+        t2 = Time.now
+                
         event = Yarder.log_entries[Thread.current]
-
+      
         if event
+
+          event.fields['total_duration'] = t2 - t1
 
           if event.fields['rendering'] && !event.fields['rendering'].empty?
             rendering_duration = event.fields['rendering'].inject(0) {|result, event| result += event[:duration].to_f }

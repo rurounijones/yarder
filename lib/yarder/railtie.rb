@@ -16,10 +16,18 @@ module Yarder
       app.middleware.swap(Rails::Rack::Logger, Yarder::Rack::Logger, app.config.log_tags)
     end
 
+    # Silence the asset logger. This has to be done in a before_initialize block because
+    # the initializer is too late. (There might be a better part of the boot process for
+    # this, keep an eye out)
+    config.before_initialize do |app|
+      app.config.assets.logger = false
+    end
+
+
     # We need to do the following in an after_initialize block to make sure we get all the
     # subscribers. Ideally rails would allow us the ability to stop the LogSubscribers from
     # registering themselves using a config option.
-    config.after_initialize do
+    config.after_initialize do |app|
 
       # Kludge the removal of the default LogSubscribers for the moment. We will use the yarder
       # LogSubscribers (since they subscribe to the same hooks in the public methods) to create
