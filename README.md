@@ -11,23 +11,17 @@ in the default rails logging output.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your Rails application's Gemfile:
 
 ```ruby
+gem 'logstash-event', :path => 'vendor/logstash'
 gem 'yarder'
 ```
 
-And then execute:
+And then execute the following within your Rails application:
 
 ```
-$ bundle
+git submodule add git://github.com/logstash/logstash.git vendor/logstash
+bundle
+bundle package --all
 ```
-
-Or install it yourself as:
-
-```
-$ gem install yarder
-```
-
-This Gem currently requires the logstash-event gem to be installed on your system. This is currently 
-not in rubygems so you will have to build it from source (See the Logstash repository)
