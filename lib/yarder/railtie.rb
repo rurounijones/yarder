@@ -24,9 +24,13 @@ module Yarder
       # Kludge the removal of the default LogSubscribers for the moment. We will use the yarder
       # LogSubscribers (since they subscribe to the same hooks in the public methods) to create
       # a list of hooks we want to unsubscribe current subscribers from.
+      modules = ["ActionController", "ActionView"]
+      modules << "ActiveRecord" if defined?(ActiveRecord)
+      modules << "ActiveResource" if defined?(ActiveResource)
+
       notifier = ActiveSupport::Notifications.notifier
 
-      ["ActionController", "ActionView", "ActiveRecord", "ActiveResource"].each do |mod|
+      modules.each do |mod|
         "Yarder::#{mod}::LogSubscriber".constantize.instance_methods(false).each do |method|
           notifier.listeners_for("#{method}.#{mod.underscore}").each do |subscriber|
             ActiveSupport::Notifications.unsubscribe subscriber
