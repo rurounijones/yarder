@@ -14,9 +14,6 @@ module Yarder
         format  = payload[:format]
         entry.fields['format']  = format.to_s.downcase if format.is_a?(Symbol)
 
-        params = payload[:params].except(*INTERNAL_PARAMS)
-        entry.fields['parameters'] = params unless params.empty?
-
       end
 
       def process_action(event)
@@ -24,10 +21,8 @@ module Yarder
         payload   = event.payload
         additions = ::ActionController::Base.log_process_action(payload)
 
-        status = payload[:status]
-        if status.nil? && payload[:exception].present?
-          status = ::Rack::Utils.status_code(::ActionDispatch::ExceptionWrapper.new({}, payload[:exception]).status_code)
-        end
+        params = payload[:params].except(*INTERNAL_PARAMS)
+        entry.fields['parameters'] = params unless params.empty?
 
         entry.fields['controller_duration'] = event.duration
 
