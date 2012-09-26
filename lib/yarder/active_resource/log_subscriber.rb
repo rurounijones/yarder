@@ -8,6 +8,7 @@ module Yarder
         entry.fields['active_resource'] ||= []
 
         request_entry = {}
+
         request_entry['method'] = event.payload[:method].to_s.upcase
         request_entry['uri'] = event.payload[:request_uri]
 
@@ -15,7 +16,7 @@ module Yarder
 
         request_entry['code'] = result.code
         request_entry['message'] = result.message
-        request_entry['length'] = result.length
+        request_entry['length'] = result.body.to_s.length
         request_entry['duration'] = event.duration
 
         entry.fields['active_resource'] << request_entry
