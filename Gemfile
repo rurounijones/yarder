@@ -14,11 +14,13 @@ gem 'jquery-rails'
 # your gem to rubygems.org.
 
 # To use debugger
-# gem 'debugger'
+#gem 'debugger'
+
 gem 'logstash-event', :path => 'vendor/logstash'
 
 group :development, :test do
   gem 'simplecov', :require => false
+  gem 'capybara', '>=1.1.2'
   gem 'sqlite3'
 end
 

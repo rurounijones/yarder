@@ -20,4 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency "logstash-event"
 
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency "simplecov"
+  s.add_development_dependency(%q<capybara>, ['>= 1.1.2'])
 end
