@@ -19,8 +19,12 @@ gem 'jquery-rails'
 gem 'logstash-event', :path => 'vendor/logstash'
 
 group :development, :test do
-  gem 'simplecov', :require => false
+  gem 'simplecov', :require => false, :platform => :ruby_19
   gem 'capybara', '>=1.1.2'
-  gem 'sqlite3'
+  gem 'sqlite3', :platform => :ruby_19
+
+  gem 'jdbc-sqlite3', :platform => :jruby
+  gem 'activerecord-jdbcsqlite3-adapter', :platform => :jruby
+
 end
 

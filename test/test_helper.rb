@@ -1,8 +1,9 @@
-require 'simplecov'
-
-SimpleCov.start do
-  add_filter '/test/'
-  add_filter '/vendor/'
+unless defined? JRUBY_VERSION
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter '/test/'
+    add_filter '/vendor/'
+  end
 end
 
 # Configure Rails Environment
