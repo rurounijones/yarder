@@ -5,7 +5,7 @@ class Person < ActiveResource::Base
   self.site = "http://37s.sunrise.i:3000"
 end
 
-class LogSubscriberTest < ActiveSupport::TestCase
+class AResourceLogSubscriberTest < ActiveSupport::TestCase
   include ActiveSupport::LogSubscriber::TestHelper
 
   def setup
