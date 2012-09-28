@@ -1,5 +1,4 @@
 require "active_support/log_subscriber/test_helper"
-require "active_resource/log_subscriber"
 require "active_support/core_ext/hash/conversions"
 
 class Person < ActiveResource::Base
