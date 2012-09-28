@@ -67,7 +67,7 @@ module Yarder
 
 
       def entry
-        @entry ||= Yarder.log_entries[Thread.current]
+        Yarder.log_entries[Thread.current]
       end
 
     end
