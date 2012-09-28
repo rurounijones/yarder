@@ -28,6 +28,10 @@ class LoggerTestNoTags < ActiveSupport::IntegrationCase
     assert_equal "/widgets", entry['@fields']['path']
   end
 
+  test 'fills in the severity' do
+    assert_equal "INFO", entry['@fields']['severity']
+  end
+
   test 'fills in the total_duration' do
     assert entry['@fields']['total_duration'].to_f >= 0, "total_duration was not a positive number"
   end
@@ -51,6 +55,8 @@ class LoggerTestNoTags < ActiveSupport::IntegrationCase
   test 'fills in the proc tag' do
     assert_match "Proc", entry['@tags'].last
   end
+
+  #TODO Add tests for view and SQL rendering summaries
 
 
   def entry

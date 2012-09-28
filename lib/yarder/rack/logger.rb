@@ -14,6 +14,7 @@ module Yarder
         request = ActionDispatch::Request.new(env)
 
         event = LogStash::Event.new
+        event.fields['severity'] = 'INFO'
         event.message = "#{request.request_method} #{request.filtered_path} for #{request.ip}"
         event.fields['client_ip'] = request.ip
         event.fields['method'] = request.request_method
