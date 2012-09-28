@@ -4,14 +4,14 @@ Dummy::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  match "show" => "another/log_subscribers#show"
-  match "never_executed" => "another/log_subscribers#never_executed"
-  match "redirector" => "another/log_subscribers#redirector"
-  match "data_sender" => "another/log_subscribers#data_sender"
-  match "file_sender" => "another/log_subscribers#file_sender"
-  match "with_fragment_cache" => "another/log_subscribers#with_fragment_cache"
-  match "with_fragment_cache_and_percent_in_key" => "another/log_subscribers#with_fragment_cache_and_percent_in_key"
-  match "with_page_cache" => "another/log_subscribers#with_page_cache"
+  match "show" => "log_subscribers#show"
+  match "never_executed" => "log_subscribers#never_executed"
+  match "redirector" => "log_subscribers#redirector"
+  match "data_sender" => "log_subscribers#data_sender"
+  match "file_sender" => "log_subscribers#file_sender"
+  match "with_fragment_cache" => "log_subscribers#with_fragment_cache"
+  match "with_fragment_cache_and_percent_in_key" => "log_subscribers#with_fragment_cache_and_percent_in_key"
+  match "with_page_cache" => "log_subscribers#with_page_cache"
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
