@@ -1,4 +1,5 @@
 require "active_support/log_subscriber/test_helper"
+require "test_helper"
 
 class ARecordLogSubscriberTest < ActiveSupport::TestCase
   include ActiveSupport::LogSubscriber::TestHelper

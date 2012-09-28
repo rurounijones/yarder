@@ -2,9 +2,16 @@ require 'test_helper'
 
 # TODO These tests are fragile because they rely on the output being added
 # to the last line of the log file. See if there is a better way to do this
-class LoggerTestNoTags < ActiveSupport::IntegrationCase
+class LoggerTest < ActiveSupport::IntegrationCase
+  class MyLogger < Yarder::BufferedLogger
+    def flush(*)
+    end
+
+  end
 
   setup do
+    @output = StringIO.new
+    Rails.logger = Yarder::TaggedLogging.new(MyLogger.new(@output))
     visit('/widgets')
   end
 
@@ -58,10 +65,8 @@ class LoggerTestNoTags < ActiveSupport::IntegrationCase
 
   #TODO Add tests for view and SQL rendering summaries
 
-
   def entry
-    line = IO.readlines(File.expand_path("test/dummy/log/test.log"))[-1]
-    JSON.parse(line)
+    JSON.parse(@output.string)
   end
 
 end

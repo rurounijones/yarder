@@ -1,5 +1,5 @@
 require "active_support/log_subscriber/test_helper"
-require "support/fake_models"
+require "test_helper"
 
 class AVLogSubscriberTest < ActiveSupport::TestCase
   include ActiveSupport::LogSubscriber::TestHelper

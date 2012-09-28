@@ -22,19 +22,7 @@ module Yarder
         event.source = "http://#{Socket.gethostname}#{request.filtered_path}"
         event.type = "rails_json_log"
 
-        if @tags
-          @tags.each do |tag|
-            case tag
-            when Symbol
-              event.fields[tag.to_s] = request.send(tag)
-            when Proc
-              event.tags << tag.call(request)
-            else
-              event.tags << tag
-            end
-          end
-        end
-
+        add_tags_to_logger(request) if @tags
 
         Yarder.log_entries[Thread.current] = event
 
@@ -63,11 +51,29 @@ module Yarder
             event.fields['sql_duration'] = sql_duration
           end
 
-          Rails.logger.info event.to_json
+          Rails.logger.info event
 
         end
 
         Yarder.log_entries[Thread.current] = nil
+      end
+
+      def add_tags_to_logger(request)
+        tags = []
+        if @tags
+          @tags.each do |tag|
+            case tag
+            when Symbol
+              tags << {tag.to_s => request.send(tag) }
+            when Proc
+              tags << tag.call(request)
+            else
+              tags << tag
+            end
+          end
+        end
+
+        Rails.logger.push_request_tags(tags)
       end
 
 

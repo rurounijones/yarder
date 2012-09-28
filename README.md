@@ -13,7 +13,17 @@ This gem will create JSON based log entries designed for consumption by Logstash
 JSON they can be read by other software). The JSON will contain the same information as can be found 
 in the default rails logging output.
 
-Yarder has only been tested against Rails 3.2.8 on Ruby 1.9.3 and JRuby running in 1.9 mode.
+## Current Status
+
+This gem is not production ready however it is probably ready for people interested in seeing the 
+results. All logging in a Rails3 app should be JSON formatted, including ad-hoc logging.
+
+Yarder has only been tested against Rails 3.2.8 on Ruby 1.9.3 and JRuby running in 1.9 mode. Test
+coverage is reasonable and most of the original Rails3 logging tests are passing. Additional tests
+unique to this gem still need to be created.
+
+Any help, feedback or pull-requests would be much appreciated, especially related to refactoring and 
+test improvement
 
 ## Installation
 
