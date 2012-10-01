@@ -23,6 +23,7 @@ module Yarder
     # this, keep an eye out)
     config.before_initialize do |app|
       app.config.assets.logger = false
+      #TODO make this configurable
       app.config.logger = Rails.logger = Yarder::TaggedLogging.new(Yarder::BufferedLogger.new(Rails.root.join('log',"#{Rails.env}.log").to_s))
     end
 

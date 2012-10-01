@@ -5,13 +5,15 @@ require 'yarder/buffered_logger'
 module Yarder
   # Wraps any standard Logger object to provide tagging capabilities.
   #
-  # logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
-  # logger.tagged('BCX') { logger.info 'Stuff' } # Logs "[BCX] Stuff"
-  # logger.tagged('BCX', "Jason") { logger.info 'Stuff' } # Logs "[BCX] [Jason] Stuff"
-  # logger.tagged('BCX') { logger.tagged('Jason') { logger.info 'Stuff' } } # Logs "[BCX] [Jason] Stuff"
+  # logger = Yarder::TaggedLogging.new(Logger.new(STDOUT))
+  # logger.tagged('BCX') { logger.info 'Stuff' } # Adds BCX to the @tags array and "Stuff" to the @message
+  # logger.tagged('BCX', "Jason") { logger.info 'Stuff' } # Adds 'BCX' and 'Jason' to the @tags array and "Stuff"
+  # to the @message
+  # logger.tagged('BCX') { logger.tagged('Jason') { logger.info 'Stuff' } } # Adds 'BCX' and 'Jason' to the @tags
+  # array and "Stuff" to the @message
   #
-  # This is used by the default Rails.logger as configured by Railties to make
-  # it easy to stamp log lines with subdomains, request ids, and anything else
+  # This is used by the default Rails.logger when the Yarder gem is added to a rails application
+  # to make it easy to stamp JSON logs with subdomains, request ids, and anything else
   # to aid debugging of multi-user production applications.
   module TaggedLogging
     module Formatter # :nodoc:
@@ -27,6 +29,7 @@ module Yarder
         @entry.fields['severity'] = severity
         process_tags(current_tags)
         process_tags(current_request_tags)
+        #TODO Should we do anything with progname? What about source?
         super(severity, timestamp, progname, @entry.to_json)
       end
 

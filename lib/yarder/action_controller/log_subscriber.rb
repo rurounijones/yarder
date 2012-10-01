@@ -1,4 +1,4 @@
-require 'active_support/core_ext/object/blank'
+require 'yarder/core_ext/object/blank'
 
 module Yarder
   module ActionController

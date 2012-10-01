@@ -19,6 +19,7 @@ module Yarder
         event.fields['client_ip'] = request.ip
         event.fields['method'] = request.request_method
         event.fields['path'] = request.filtered_path
+        #TODO Should really move this into the base logger
         event.source = "http://#{Socket.gethostname}#{request.filtered_path}"
         event.type = "rails_json_log"
 
@@ -27,32 +28,22 @@ module Yarder
         Yarder.log_entries[Thread.current] = event
 
         status, headers, response = @app.call(env)
-
-        Yarder.log_entries[Thread.current].fields['status'] = status
-
         [status, headers, response]
 
       ensure
-        t2 = Time.now
-                
-        event = Yarder.log_entries[Thread.current]
+        event.fields['status'] = status
       
         if event
+          event.fields['total_duration'] = Time.now - t1
 
-          event.fields['total_duration'] = t2 - t1
-
-          if event.fields['rendering'] && !event.fields['rendering'].empty?
-            rendering_duration = event.fields['rendering'].inject(0) {|result, event| result += event[:duration].to_f }
-            event.fields['rendering_duration'] = rendering_duration
-          end
-
-          if event.fields['sql'] && !event.fields['sql'].empty?
-            sql_duration = event.fields['sql'].inject(0) {|result, event| result += event[:duration].to_f }
-            event.fields['sql_duration'] = sql_duration
+          ['rendering','sql'].each do |type|
+            if event.fields[type] && !event.fields[type].empty?
+              duration = event.fields[type].inject(0) {|result, event| result += event[:duration].to_f }
+              event.fields["#{type}_duration"] = duration
+            end
           end
 
           Rails.logger.info event
-
         end
 
         Yarder.log_entries[Thread.current] = nil
@@ -75,9 +66,6 @@ module Yarder
 
         Rails.logger.push_request_tags(tags)
       end
-
-
-
 
     end
 
