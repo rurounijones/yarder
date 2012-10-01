@@ -1,3 +1,4 @@
+require 'yarder/core_ext/object/blank'
 require 'yarder/action_controller/log_subscriber'
 require 'yarder/action_view/log_subscriber'
 require 'yarder/active_record/log_subscriber' if defined?(ActiveRecord)
@@ -22,7 +23,7 @@ module Yarder
     # this, keep an eye out)
     config.before_initialize do |app|
       app.config.assets.logger = false
-      app.config.logger = Rails.logger = Yarder::TaggedLogging.new(Yarder::BufferedLogger.new(Rails.root.join('log',"#{Rails.env}.log")))
+      app.config.logger = Rails.logger = Yarder::TaggedLogging.new(Yarder::BufferedLogger.new(Rails.root.join('log',"#{Rails.env}.log").to_s))
     end
 
 
