@@ -18,6 +18,11 @@ class TaggedLoggingTest < ActiveSupport::TestCase
     assert logger.formatter.respond_to?(:tagged)
   end
 
+  test 'fills in the severity' do
+    @logger.info "Severity Test"
+    assert_equal "INFO", JSON.parse(@output.string)['@fields']['severity']
+  end
+
   test "tagged once" do
     @logger.tagged("BCX") { @logger.info "Funky time" }
     assert_equal "BCX", JSON.parse(@output.string)['@tags'][0]

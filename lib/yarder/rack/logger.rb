@@ -14,7 +14,6 @@ module Yarder
         request = ActionDispatch::Request.new(env)
 
         event = LogStash::Event.new
-        event.fields['severity'] = 'INFO'
         event.message = "#{request.request_method} #{request.filtered_path} for #{request.ip}"
         event.fields['client_ip'] = request.ip
         event.fields['method'] = request.request_method
@@ -31,10 +30,9 @@ module Yarder
         [status, headers, response]
 
       ensure
-        event.fields['status'] = status
-      
         if event
           event.fields['total_duration'] = Time.now - t1
+          event.fields['status'] = status
 
           ['rendering','sql'].each do |type|
             if event.fields[type] && !event.fields[type].empty?

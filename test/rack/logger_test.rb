@@ -35,10 +35,6 @@ class LoggerTest < ActiveSupport::IntegrationCase
     assert_equal "/widgets", entry['@fields']['path']
   end
 
-  test 'fills in the severity' do
-    assert_equal "INFO", entry['@fields']['severity']
-  end
-
   test 'fills in the total_duration' do
     assert entry['@fields']['total_duration'].to_f >= 0, "total_duration was not a positive number"
   end
