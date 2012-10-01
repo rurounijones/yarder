@@ -1,6 +1,7 @@
 require 'stringio'
 require 'fileutils'
 require 'tempfile'
+require 'test_helper'
 
 class BufferedLoggerTest < ActiveSupport::TestCase
   include MultibyteTestHelpers
