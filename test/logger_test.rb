@@ -111,12 +111,16 @@ class BufferedLoggerTest < ActiveSupport::TestCase
     end
   end
 
-  def test_buffer_multibyte
-    @logger.info(UNICODE_STRING)
-    @logger.info(BYTE_STRING)
-    assert @output.string.include?(UNICODE_STRING)
-    byte_string = @output.string.dup
-    byte_string.force_encoding("ASCII-8BIT")
-    assert byte_string.include?(BYTE_STRING)
+  # This test will fail on JRuby versions lower than 1.7 due to UTF-8 Encoding issues
+  # so only run on MRI and JRuby 1.7 and later
+  unless defined?(JRUBY_VERSION) && JRUBY_VERSION.to_f < 1.7
+    def test_buffer_multibyte
+      @logger.info(UNICODE_STRING)
+      @logger.info(BYTE_STRING)
+      assert @output.string.include?(UNICODE_STRING)
+      byte_string = @output.string.dup
+      byte_string.force_encoding("ASCII-8BIT")
+      assert byte_string.include?(BYTE_STRING)
+    end
   end
 end
