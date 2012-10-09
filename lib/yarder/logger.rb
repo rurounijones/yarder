@@ -2,8 +2,8 @@ require 'logger'
 
 module Yarder
 
-  # Based on the ActiveSupport::Logger (Formerly BufferedLogger)
-  class BufferedLogger < ::Logger
+  # Based on the ActiveSupport::Logger (Formerly known as BufferedLogger)
+  class Logger < ::Logger
     # Broadcasts logs to multiple loggers.
     def self.broadcast(logger) # :nodoc:
       Module.new do

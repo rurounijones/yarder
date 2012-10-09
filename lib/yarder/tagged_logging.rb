@@ -1,6 +1,6 @@
 require 'yarder/core_ext/object/blank'
 require 'logger'
-require 'yarder/buffered_logger'
+require 'yarder/logger'
 
 module Yarder
   # Wraps any standard Logger object to provide tagging capabilities.

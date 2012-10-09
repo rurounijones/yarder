@@ -1,7 +1,7 @@
 require 'yarder/railtie' if defined?(Rails)
 require 'yarder/rack/logger'
 require 'logstash-event'
-require 'yarder/buffered_logger'
+require 'yarder/logger'
 require 'yarder/tagged_logging'
 
 module Yarder

@@ -3,7 +3,7 @@ require 'test_helper'
 # TODO These tests are fragile because they rely on the output being added
 # to the last line of the log file. See if there is a better way to do this
 class LoggerTest < ActiveSupport::IntegrationCase
-  class MyLogger < Yarder::BufferedLogger
+  class MyLogger < Yarder::Logger
     def flush(*)
     end
 

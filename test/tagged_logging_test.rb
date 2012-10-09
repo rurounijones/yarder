@@ -1,8 +1,8 @@
-require 'yarder/buffered_logger'
+require 'yarder/logger'
 require 'yarder/tagged_logging'
 
 class TaggedLoggingTest < ActiveSupport::TestCase
-  class MyLogger < Yarder::BufferedLogger
+  class MyLogger < Yarder::Logger
   end
 
   setup do

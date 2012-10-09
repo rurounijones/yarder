@@ -6,7 +6,7 @@ require 'test_helper'
 class BufferedLoggerTest < ActiveSupport::TestCase
   include MultibyteTestHelpers
 
-  Logger = Yarder::BufferedLogger
+  Logger = Yarder::Logger
 
   def setup
     @message = "A debug message"

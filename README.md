@@ -23,7 +23,7 @@ coverage is reasonable and most of the original Rails3 logging tests are passing
 unique to this gem still need to be created.
 
 There may be issues regarding outputting UTF-8 characters in logs on JRuby 1.6 in --1.9 mode. JRuby
-1.7 is recommendd.
+1.7 is recommended.
 
 Any help, feedback or pull-requests would be much appreciated, especially related to refactoring and 
 test improvement
@@ -74,7 +74,7 @@ change to a non-nested format.
 
 For developers, after checking out this repository please run
 
-```
+```text
 git submodule update --init
 bundle
 rake
