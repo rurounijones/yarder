@@ -6,6 +6,8 @@ require 'yarder/tagged_logging'
 
 module Yarder
 
+  class IncompatibleLogger < StandardError; end
+
   def self.log_entries
     @@events ||= {}
   end

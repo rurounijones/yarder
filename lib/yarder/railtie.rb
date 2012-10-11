@@ -15,7 +15,6 @@ module Yarder
 
     initializer "yarder.swap_rack_logger_middleware" do |app|
       app.middleware.swap(Rails::Rack::Logger, Yarder::Rack::Logger, app.config.log_tags)
-
     end
 
     # Silence the asset logger. This has to be done in a before_initialize block because
@@ -23,8 +22,15 @@ module Yarder
     # this, keep an eye out)
     config.before_initialize do |app|
       app.config.assets.logger = false
-      #TODO make this configurable
-      app.config.logger = Rails.logger = Yarder::TaggedLogging.new(Yarder::Logger.new(Rails.root.join('log',"#{Rails.env}.log").to_s))
+
+      if app.config.logger.nil? && Rails.logger.class == ActiveSupport::TaggedLogging
+        raise IncompatibleLogger, "Please replace the default rails logger (See the " +
+                                  "Configuration section of the Yarder README)"
+      end
+
+      # Take the current logger and replace it with itself wrapped by the
+      # Yarder::TaggedLogging class
+      app.config.logger = Yarder::TaggedLogging.new(app.config.logger)
     end
 
 

@@ -45,6 +45,31 @@ bundle
 bundle package --all
 ```
 
+## Configuration
+
+Yarder uses the Rails logger (set using config.logger in application.rb)to log output.
+
+By default Rails uses the TaggedLogging class to provide this however because Yarder
+replaces it you will need to change the default to something else.
+
+You will need to specify a Ruby Logger compatible logger. Yarder provides its own
+logger which is a copy of the ActiveSupport::Logger (Formerly known as
+ActiveSupport::BufferedLogger)
+
+If you are not sure what you want yet then set the Yarder::Logger as in the example
+below in your application.rb file.
+
+```ruby
+module MyApp
+  class Application < Rails::Application
+
+    # Set a logger compatible with the standard ruby logger to be used by Yarder
+    config.logger = Yarder::Logger.new(Rails.root.join('log',"#{Rails.env}.log").to_s)
+
+  end
+end
+```
+
 ## Logstash Configuration
 
 Yarder currently creates log entries with a hard-coded logtype of "rails_json_log" (This may change 

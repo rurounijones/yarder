@@ -55,6 +55,7 @@ module Dummy
     # parameters by using an attr_accessible or attr_protected declaration.
     # config.active_record.whitelist_attributes = true
 
+    config.logger = Yarder::Logger.new(Rails.root.join('log',"#{Rails.env}.log").to_s)
 
     config.log_tags = ["Hello", :uuid, Proc.new { "Proc" }]
 
