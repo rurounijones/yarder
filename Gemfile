@@ -16,7 +16,7 @@ gem 'jquery-rails'
 # To use debugger
 #gem 'debugger'
 
-gem 'logstash-event', :path => 'vendor/logstash'
+gem 'logstash-event', '~>1.1.5'
 
 group :development, :test do
   gem 'simplecov', :require => false, :platform => :ruby_19

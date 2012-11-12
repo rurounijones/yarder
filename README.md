@@ -23,7 +23,7 @@ coverage is reasonable and most of the original Rails3 logging tests are passing
 unique to this gem still need to be created.
 
 There may be issues regarding outputting UTF-8 characters in logs on JRuby 1.6 in --1.9 mode. JRuby
-1.7 is recommended.
+1.7 is recommended (These same issues exist in the man ruby loggers so use that as a guide).
 
 Any help, feedback or pull-requests would be much appreciated, especially related to refactoring and 
 test improvement
@@ -33,16 +33,7 @@ test improvement
 Add this line to your Rails application's Gemfile:
 
 ```ruby
-gem 'logstash-event', :path => 'vendor/logstash'
 gem 'yarder'
-```
-
-And then execute the following within your Rails application:
-
-```
-git submodule add git://github.com/logstash/logstash.git vendor/logstash
-bundle
-bundle package --all
 ```
 
 ## Configuration
@@ -94,13 +85,3 @@ serialized Logstash::Event entries there is no need to setup any filters
 Yarder currently creates nested JSON. While this is supported in Logstash and Elastic Search the web 
 interfaces do not as yet support it. Depending on whether support is possible or not Yarder may 
 change to a non-nested format.
-
-## Developers
-
-For developers, after checking out this repository please run
-
-```text
-git submodule update --init
-bundle
-rake
-```

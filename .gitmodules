@@ -1,3 +1,0 @@
-[submodule "vendor/logstash"]
-	path = vendor/logstash
-	url = git://github.com/logstash/logstash.git

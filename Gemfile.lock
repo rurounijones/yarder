@@ -2,13 +2,8 @@ PATH
   remote: .
   specs:
     yarder (0.0.1)
-      logstash-event
+      logstash-event (~> 1.1.5)
       rails (~> 3.2.0)
-
-PATH
-  remote: vendor/logstash
-  specs:
-    logstash-event (1.1.2.dev)
 
 GEM
   remote: http://rubygems.org/
@@ -70,6 +65,7 @@ GEM
     json (1.7.5-java)
     libwebsocket (0.1.5)
       addressable
+    logstash-event (1.1.5)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -137,7 +133,7 @@ DEPENDENCIES
   capybara (>= 1.1.2)
   jdbc-sqlite3
   jquery-rails
-  logstash-event!
+  logstash-event (~> 1.1.5)
   simplecov
   sqlite3
   yarder!
