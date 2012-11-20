@@ -19,7 +19,8 @@ module Yarder
       def process_action(event)
 
         payload   = event.payload
-        additions = ::ActionController::Base.log_process_action(payload)
+        #TODO Think about additions. Comment out for the moment to shut up warnings
+        #additions = ::ActionController::Base.log_process_action(payload)
 
         params = payload[:params].except(*INTERNAL_PARAMS)
         entry.fields['parameters'] = params unless params.empty?

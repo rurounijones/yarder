@@ -37,14 +37,14 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
     wait
 
     assert_equal 'Widget Load', sql_entry['name']
-    assert_match /SELECT .*?FROM .?widgets.?/i, sql_entry['sql']
+    assert_match(/SELECT .*?FROM .?widgets.?/i, sql_entry['sql'])
   end
 
   def test_exists_query_logging
     Widget.exists? 1
     wait
     assert_equal 'Widget Exists', sql_entry['name']
-    assert_match /SELECT .*?FROM .?widgets.?/i, sql_entry['sql']
+    assert_match(/SELECT .*?FROM .?widgets.?/i, sql_entry['sql'])
   end
 
 
@@ -55,7 +55,7 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
     end
     wait
     assert_equal 'CACHE', sql_entry['name']
-    assert_match /SELECT .*?FROM .?widgets.?/i, sql_entry['sql']
+    assert_match(/SELECT .*?FROM .?widgets.?/i, sql_entry['sql'])
   end
 
 =begin
