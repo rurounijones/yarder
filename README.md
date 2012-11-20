@@ -82,6 +82,18 @@ serialized Logstash::Event entries there is no need to setup any filters
 
 ### Known issues
 
-Yarder currently creates nested JSON. While this is supported in Logstash and Elastic Search the web 
-interfaces do not as yet support it. Depending on whether support is possible or not Yarder may 
-change to a non-nested format.
+Yarder currently creates nested JSON. Kibana has pretty good (With a few small UI problems) support
+for nested JSON but logstash web does not.
+
+## Developers
+
+Thoughts, suggestions, opinions and contributions are welcome. 
+
+When contributing please make sure to run your tests with warnings enabled and make sure that
+yarder creates no warnings. (Warnings from other libraries like capybara etc. are ok)
+
+```
+RUBYOPT=-w rake
+```
+
+
