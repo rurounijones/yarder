@@ -22,3 +22,6 @@ test/dummy/log/*.log
 
 # Rubymine files
 .idea
+
+# Various other files
+.rbx
