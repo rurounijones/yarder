@@ -20,10 +20,10 @@ module Yarder
       # This method is invoked when a log event occurs.
       def call(severity, timestamp, progname, msg)
         @entry = nil
-        if msg.class == LogStash::Event
+        if msg.class == Yarder::Event
           @entry = msg
         else
-          @entry = LogStash::Event.new
+          @entry = Yarder::Event.new
           @entry.message = msg
         end
         @entry.fields['severity'] = severity

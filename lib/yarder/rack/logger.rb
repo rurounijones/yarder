@@ -13,7 +13,7 @@ module Yarder
         t1 = Time.now
         request = ActionDispatch::Request.new(env)
 
-        event = LogStash::Event.new
+        event = Yarder::Event.new(true)
         event.message = "#{request.request_method} #{request.filtered_path} for #{request.ip}"
         event.fields['client_ip'] = request.ip
         event.fields['method'] = request.request_method
