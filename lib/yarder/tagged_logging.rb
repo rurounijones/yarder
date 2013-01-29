@@ -23,7 +23,7 @@ module Yarder
         if msg.class == Yarder::Event
           @entry = msg
         else
-          @entry = Yarder::Event.new
+          @entry = Yarder::Event.new(Rails.logger)
           @entry.message = msg
         end
         @entry.fields['severity'] = severity

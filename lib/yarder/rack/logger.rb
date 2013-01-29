@@ -13,7 +13,7 @@ module Yarder
         t1 = Time.now
         request = ActionDispatch::Request.new(env)
 
-        event = Yarder::Event.new(true)
+        event = Yarder::Event.new(Rails.logger, true)
         event.message = "#{request.request_method} #{request.filtered_path} for #{request.ip}"
         event.fields['client_ip'] = request.ip
         event.fields['method'] = request.request_method
@@ -22,7 +22,7 @@ module Yarder
         event.source = "http://#{Socket.gethostname}#{request.filtered_path}"
         event.type = "rails_json_log"
 
-        add_tags_to_logger(request) if @tags
+        event.add_tags_to_logger(request, @tags) if @tags
 
         Yarder.log_entries[Thread.current] = event
 
@@ -41,28 +41,10 @@ module Yarder
             end
           end
 
-          Rails.logger.info event
+          event.write(true)
         end
 
         Yarder.log_entries[Thread.current] = nil
-      end
-
-      def add_tags_to_logger(request)
-        tags = []
-        if @tags
-          @tags.each do |tag|
-            case tag
-            when Symbol
-              tags << {tag.to_s => request.send(tag) }
-            when Proc
-              tags << tag.call(request)
-            else
-              tags << tag
-            end
-          end
-        end
-
-        Rails.logger.push_request_tags(tags)
       end
 
     end
