@@ -1,3 +1,5 @@
+require "securerandom"
+
 module Yarder
   module ActiveRecord
     class LogSubscriber < ::ActiveSupport::LogSubscriber
@@ -44,6 +46,7 @@ module Yarder
         sql_entry['binds'] = binds unless binds.nil?
 
         entry.fields['sql'] << sql_entry
+        entry.write(false)
       end
 
       def identity(event)
@@ -57,6 +60,7 @@ module Yarder
         sql_entry['duration'] = payload[:duration]
 
         entry.fields['sql'] << sql_entry
+        entry.write(false)
       end
 
     private
@@ -67,7 +71,15 @@ module Yarder
 
 
       def entry
-        Yarder.log_entries[Thread.current]
+        entry = Yarder.log_entries[Thread.current]
+        unless entry
+          entry = Yarder::Event.new(Rails.logger, false)
+          entry.fields['uuid'] = SecureRandom.uuid
+          #TODO Should really move this into the base logger
+          entry.source ||= Socket.gethostname
+          entry.type = "rails_json_log"
+        end
+        entry
       end
 
     end
