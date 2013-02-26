@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/rurounijones/yarder.png)](http://travis-ci.org/rurounijones/yarder)
 [![Dependency Status](https://gemnasium.com/rurounijones/yarder.png)](https://gemnasium.com/rurounijones/yarder)
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/rurounijones/yarder)
+[![Code Climate](https://codeclimate.com/github/rurounijones/yarder.png)](https://codeclimate.com/github/rurounijones/yarder)
 
 JSON Based Replacement logging system for Ruby on Rails.
 
