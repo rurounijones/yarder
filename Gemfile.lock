@@ -50,6 +50,13 @@ GEM
       xpath (~> 1.0.0)
     childprocess (0.3.8)
       ffi (~> 1.0, >= 1.0.11)
+    colorize (0.5.8)
+    coveralls (0.5.7)
+      colorize
+      json
+      rest-client
+      simplecov (>= 0.7)
+      thor
     erubis (2.7.0)
     ffi (1.4.0)
     ffi (1.4.0-java)
@@ -97,6 +104,8 @@ GEM
     rake (10.0.3)
     rdoc (3.12.2)
       json (~> 1.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rubyzip (0.9.9)
     selenium-webdriver (2.30.0)
       childprocess (>= 0.2.5)
@@ -130,6 +139,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
   capybara (>= 1.1.2)
+  coveralls
   jdbc-sqlite3
   jquery-rails
   logstash-event (~> 1.1.5)
