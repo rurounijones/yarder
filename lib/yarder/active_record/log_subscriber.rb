@@ -76,7 +76,7 @@ module Yarder
           entry = Yarder::Event.new(Rails.logger, false)
           entry.fields['uuid'] = SecureRandom.uuid
           #TODO Should really move this into the base logger
-          entry.source ||= Socket.gethostname
+          entry.source = Socket.gethostname
           entry.type = "rails_json_log"
         end
         entry
