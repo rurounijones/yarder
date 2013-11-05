@@ -29,9 +29,6 @@ module Yarder
 
         return if 'SCHEMA' == payload[:name]
 
-        return unless entry
-
-        entry.fields['sql'] ||= []
         sql_entry = {}
         sql_entry['name'] = payload[:name]
         sql_entry['duration'] = event.duration
@@ -47,8 +44,7 @@ module Yarder
 
         sql_entry['binds'] = binds unless binds.nil?
 
-        entry.fields['sql'] << sql_entry
-        entry.write(false)
+        write_entry sql_entry
       end
 
       def identity(event)
@@ -61,27 +57,30 @@ module Yarder
         sql_entry['line'] = payload[:line]
         sql_entry['duration'] = payload[:duration]
 
-        entry.fields['sql'] << sql_entry
-        entry.write(false)
+        write_entry sql_entry
       end
 
     private
+
+      def write_entry(sql_entry)
+        entry = log_entry
+        entry.fields['sql'] ||= []
+        entry.fields['sql'] << sql_entry
+        entry.write(false)
+      end
 
       def logger
         ::ActiveRecord::Base.logger
       end
 
-
-      def entry
-        entry = Yarder.log_entries[Thread.current]
-        unless entry
-          entry = Yarder::Event.new(Rails.logger, false)
+      def log_entry
+        Yarder.log_entries[Thread.current] ||
+          Yarder::Event.new(Rails.logger, false).tap do |entry|
           entry.fields['uuid'] = SecureRandom.uuid
           #TODO Should really move this into the base logger
           entry.source = Socket.gethostname
           entry.type = "rails_json_log"
         end
-        entry
       end
 
     end
