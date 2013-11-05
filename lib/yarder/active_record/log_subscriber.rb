@@ -29,6 +29,8 @@ module Yarder
 
         return if 'SCHEMA' == payload[:name]
 
+        return unless entry
+
         entry.fields['sql'] ||= []
         sql_entry = {}
         sql_entry['name'] = payload[:name]
