@@ -20,7 +20,7 @@ gem 'logstash-event', '~>1.1.5'
 
 group :development, :test do
   gem 'simplecov', :require => false, :platform => :ruby
-  gem 'capybara', '>=1.1.2'
+  gem 'capybara', '~>1.1.2'
   gem 'sqlite3', :platform => :ruby
 
   gem 'jdbc-sqlite3', :platform => :jruby

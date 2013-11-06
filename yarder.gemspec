@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.2.0"
   s.add_dependency "logstash-event", "~> 1.1.5"
 
-  s.add_development_dependency(%q<capybara>, ['>= 1.1.2'])
+  s.add_development_dependency(%q<capybara>, ['~> 1.1.2'])
 end
