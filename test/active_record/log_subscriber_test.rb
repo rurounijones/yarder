@@ -19,8 +19,8 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
   def test_mandatory_fields_present
     Widget.find(1)
     wait
-    assert_present @log_entry.fields['sql']
-    assert_present @log_entry.fields['sql'].first['duration']
+    assert_present @log_entry['sql']
+    assert_present @log_entry['sql'].first['duration']
   end
 
   def test_sql_fields_present
@@ -64,7 +64,7 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
     @logger.level = Logger::INFO
     Widget.all
     wait
-    assert_blank @log_entry.fields['sql']
+    assert_blank @log_entry['sql']
   end
 
 
@@ -75,13 +75,13 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
       Widget.all
     end
     wait
-    assert_blank @log_entry.fields['sql']
+    assert_blank @log_entry['sql']
   end
 =end
   private
 
   def sql_entry
-    @sql_entry ||= @log_entry.fields['sql'].last
+    @sql_entry ||= @log_entry['sql'].last
   end
 
 end

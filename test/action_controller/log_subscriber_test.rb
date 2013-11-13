@@ -31,9 +31,9 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :show, {:test => 'test'}
     wait
 
-    assert_equal "LogSubscribersController", @log_entry.fields['controller']
-    assert_equal "show", @log_entry.fields['action']
-    assert_equal "html", @log_entry.fields['format']
+    assert_equal "LogSubscribersController", @log_entry['controller']
+    assert_equal "show", @log_entry['action']
+    assert_equal "html", @log_entry['format']
   end
 
 
@@ -41,28 +41,28 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :never_executed
     wait
 
-    assert_equal ":redirector" ,@log_entry.fields['halted_callback']
+    assert_equal ":redirector" ,@log_entry['halted_callback']
   end
 
   def test_process_action
     get :show
     wait
 
-    assert_present @log_entry.fields['controller_duration']
+    assert_present @log_entry['controller_duration']
   end
 
   def test_process_action_without_parameters
     get :show
     wait
 
-    assert_blank @log_entry.fields['parameters']
+    assert_blank @log_entry['parameters']
   end
 
   def test_process_action_with_parameters
     get :show, :id => '10'
     wait
 
-    assert_equal '10', @log_entry.fields['parameters']['id']
+    assert_equal '10', @log_entry['parameters']['id']
   end
 
   def test_process_action_with_wrapped_parameters
@@ -70,8 +70,8 @@ class ACLogSubscriberTest < ActionController::TestCase
     post :show, :id => '10', :name => 'jose'
     wait
 
-    assert_equal '10', @log_entry.fields['parameters']['id']
-    assert_equal 'jose', @log_entry.fields['parameters']['name']
+    assert_equal '10', @log_entry['parameters']['id']
+    assert_equal 'jose', @log_entry['parameters']['name']
   end
 
   def test_process_action_with_filter_parameters
@@ -80,7 +80,7 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :show, :lifo => 'Pratik', :amount => '420', :step => '1'
     wait
 
-    params = @log_entry.fields['parameters']
+    params = @log_entry['parameters']
     assert_equal '[FILTERED]', params['amount']
     assert_equal '[FILTERED]', params['lifo']
     assert_equal '1', params['step']
@@ -90,7 +90,7 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :redirector
     wait
 
-    assert_equal 'http://foo.bar/', @log_entry.fields['redirect_to']
+    assert_equal 'http://foo.bar/', @log_entry['redirect_to']
   end
 
 
@@ -98,8 +98,8 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :data_sender
     wait
 
-    assert_equal 'file.txt', @log_entry.fields['send_data']
-    assert_present @log_entry.fields['send_data_duration']
+    assert_equal 'file.txt', @log_entry['send_data']
+    assert_present @log_entry['send_data_duration']
   end
 
 
@@ -107,8 +107,8 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :file_sender
     wait
 
-    assert_match 'test/dummy/public/favicon.ico', @log_entry.fields['send_file']
-    assert_present @log_entry.fields['send_file_duration']
+    assert_match 'test/dummy/public/favicon.ico', @log_entry['send_file']
+    assert_present @log_entry['send_file_duration']
   end
 
   def test_with_fragment_cache
@@ -116,13 +116,13 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :with_fragment_cache
     wait
 
-    assert_present @log_entry.fields['cache']
+    assert_present @log_entry['cache']
 
-    assert_match('Read fragment', @log_entry.fields['cache'].first['type'])
-    assert_match('views/foo', @log_entry.fields['cache'].first['key_or_path'])
+    assert_match('Read fragment', @log_entry['cache'].first['type'])
+    assert_match('views/foo', @log_entry['cache'].first['key_or_path'])
 
-    assert_match('Write fragment', @log_entry.fields['cache'].last['type'])
-    assert_match('views/foo', @log_entry.fields['cache'].last['key_or_path'])
+    assert_match('Write fragment', @log_entry['cache'].last['type'])
+    assert_match('views/foo', @log_entry['cache'].last['key_or_path'])
   ensure
     LogSubscribersController.config.perform_caching = true
   end
@@ -133,13 +133,13 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :with_fragment_cache_and_percent_in_key
     wait
 
-    assert_present @log_entry.fields['cache']
+    assert_present @log_entry['cache']
 
-    assert_match('Read fragment', @log_entry.fields['cache'].first['type'])
-    assert_match('views/foo', @log_entry.fields['cache'].first['key_or_path'])
+    assert_match('Read fragment', @log_entry['cache'].first['type'])
+    assert_match('views/foo', @log_entry['cache'].first['key_or_path'])
 
-    assert_match('Write fragment', @log_entry.fields['cache'].last['type'])
-    assert_match('views/foo', @log_entry.fields['cache'].last['key_or_path'])
+    assert_match('Write fragment', @log_entry['cache'].last['type'])
+    assert_match('views/foo', @log_entry['cache'].last['key_or_path'])
   ensure
     LogSubscribersController.config.perform_caching = true
   end
@@ -150,10 +150,10 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :with_page_cache
     wait
 
-   assert_present @log_entry.fields['cache']
+   assert_present @log_entry['cache']
 
-    assert_match('Write page', @log_entry.fields['cache'][1]['type'])
-    assert_match('index.html', @log_entry.fields['cache'][1]['key_or_path'])
+    assert_match('Write page', @log_entry['cache'][1]['type'])
+    assert_match('index.html', @log_entry['cache'][1]['key_or_path'])
   ensure
     @controller.config.perform_caching = true
   end
