@@ -3,9 +3,8 @@ module Yarder
   # Basically a wrapper for a LogStash event that keeps track of if it was created from a rack
   # middle-ware or not. This is important when it comes to deciding when to write the log
   class Event
-
     extend Forwardable
-    def_delegators :@logstash_event, :fields, :message=, :source=, :type=, :tags, :to_json
+    def_delegators :@logstash_event, :[]=, :[], :to_json
 
     def initialize(logger, rack = false)
       @logger = logger
@@ -38,7 +37,6 @@ module Yarder
 
       @logger.push_request_tags(tag_hash)
     end
-
   end
 
 end
