@@ -27,6 +27,7 @@ module Yarder
           @entry['message'] = msg
         end
         @entry['severity'] = severity
+        @entry['tags'] ||= []
         process_tags(current_tags)
         process_tags(current_request_tags)
         #TODO Should we do anything with progname? What about source?
@@ -57,7 +58,6 @@ module Yarder
               @entry[k] = v
             end
           else
-            @entry['tags'] ||= []
             @entry['tags'] << tag
           end
         end

@@ -20,33 +20,33 @@ class TaggedLoggingTest < ActiveSupport::TestCase
 
   test 'fills in the severity' do
     @logger.info "Severity Test"
-    assert_equal "INFO", JSON.parse(@output.string)['@fields']['severity']
+    assert_equal "INFO", JSON.parse(@output.string)['severity']
   end
 
   test "tagged once" do
     @logger.tagged("BCX") { @logger.info "Funky time" }
-    assert_equal "BCX", JSON.parse(@output.string)['@tags'][0]
-    assert_equal "Funky time", JSON.parse(@output.string)['@message']
+    assert_equal "BCX", JSON.parse(@output.string)['tags'][0]
+    assert_equal "Funky time", JSON.parse(@output.string)['message']
   end
 
   test "tagged twice" do
     @logger.tagged("BCX") { @logger.tagged("Jason") { @logger.info "Funky time" } }
-    assert_equal "BCX", JSON.parse(@output.string)['@tags'][0]
-    assert_equal "Jason", JSON.parse(@output.string)['@tags'][1]
+    assert_equal "BCX", JSON.parse(@output.string)['tags'][0]
+    assert_equal "Jason", JSON.parse(@output.string)['tags'][1]
   end
 
   test "tagged thrice at once" do
     @logger.tagged("BCX", "Jason", "New") { @logger.info "Funky time" }
-    assert_equal "BCX", JSON.parse(@output.string)['@tags'][0]
-    assert_equal "Jason", JSON.parse(@output.string)['@tags'][1]
-    assert_equal "New", JSON.parse(@output.string)['@tags'][2]
+    assert_equal "BCX", JSON.parse(@output.string)['tags'][0]
+    assert_equal "Jason", JSON.parse(@output.string)['tags'][1]
+    assert_equal "New", JSON.parse(@output.string)['tags'][2]
   end
 
   test "tagged are flattened" do
     @logger.tagged("BCX", %w(Jason New)) { @logger.info "Funky time" }
-    assert_equal "BCX", JSON.parse(@output.string)['@tags'][0]
-    assert_equal "Jason", JSON.parse(@output.string)['@tags'][1]
-    assert_equal "New", JSON.parse(@output.string)['@tags'][2]
+    assert_equal "BCX", JSON.parse(@output.string)['tags'][0]
+    assert_equal "Jason", JSON.parse(@output.string)['tags'][1]
+    assert_equal "New", JSON.parse(@output.string)['tags'][2]
   end
 
 
@@ -59,44 +59,44 @@ class TaggedLoggingTest < ActiveSupport::TestCase
     @logger.info 'c'
     assert_equal [], @logger.clear_tags!
     @logger.info 'd'
-   # assert_equal "[A] [B] [C] a\n[A] [B] b\n[A] c\nd\n",  JSON.parse(@output.string)['@tags']
+   # assert_equal "[A] [B] [C] a\n[A] [B] b\n[A] c\nd\n",  JSON.parse(@output.string)['tags']
 
     first_log = JSON.parse(@output.string.split("\n")[0])
-    assert_equal "A", first_log['@tags'][0]
-    assert_equal "B", first_log['@tags'][1]
-    assert_equal "C", first_log['@tags'][2]
-    assert_equal "a", first_log['@message']
+    assert_equal "A", first_log['tags'][0]
+    assert_equal "B", first_log['tags'][1]
+    assert_equal "C", first_log['tags'][2]
+    assert_equal "a", first_log['message']
 
     second_log = JSON.parse(@output.string.split("\n")[1])
-    assert_equal "A", second_log['@tags'][0]
-    assert_equal "B", second_log['@tags'][1]
-    assert_equal "b", second_log['@message']
+    assert_equal "A", second_log['tags'][0]
+    assert_equal "B", second_log['tags'][1]
+    assert_equal "b", second_log['message']
 
     third_log = JSON.parse(@output.string.split("\n")[2])
-    assert_equal "A", third_log['@tags'][0]
-    assert_equal "c", third_log['@message']
+    assert_equal "A", third_log['tags'][0]
+    assert_equal "c", third_log['message']
 
     fourth_log = JSON.parse(@output.string.split("\n")[3])
-    assert fourth_log['@tags'].empty?
-    assert_equal "d", fourth_log['@message']
+    assert fourth_log['tags'].empty?
+    assert_equal "d", fourth_log['message']
   end
 
 
 
   test "does not strip message content" do
     @logger.info " Hello"
-    assert_equal " Hello", JSON.parse(@output.string)['@message']
+    assert_equal " Hello", JSON.parse(@output.string)['message']
   end
 
   test "provides access to the logger instance" do
     @logger.tagged("BCX") { |logger| logger.info "Funky time" }
-    assert_equal "BCX", JSON.parse(@output.string)['@tags'][0]
-    assert_equal "Funky time", JSON.parse(@output.string)['@message']
+    assert_equal "BCX", JSON.parse(@output.string)['tags'][0]
+    assert_equal "Funky time", JSON.parse(@output.string)['message']
   end
 
   test "tagged once with blank and nil" do
     @logger.tagged(nil, "", "New") { @logger.info "Funky time" }
-    assert_equal "New", JSON.parse(@output.string)['@tags'].last
+    assert_equal "New", JSON.parse(@output.string)['tags'].last
   end
 
   test "keeps each tag in their own thread" do
@@ -109,13 +109,13 @@ class TaggedLoggingTest < ActiveSupport::TestCase
 
     # Sub-thread
     main_thread = JSON.parse(@output.string.split("\n").first)
-    assert_equal "OMG", main_thread['@tags'][0]
-    assert_equal "Cool story bro", main_thread['@message']
+    assert_equal "OMG", main_thread['tags'][0]
+    assert_equal "Cool story bro", main_thread['message']
 
     # Main thread
     main_thread = JSON.parse(@output.string.split("\n").last)
-    assert_equal "BCX", main_thread['@tags'][0]
-    assert_equal "Funky time", main_thread['@message']
+    assert_equal "BCX", main_thread['tags'][0]
+    assert_equal "Funky time", main_thread['message']
   end
 
   test "cleans up the taggings on flush" do
@@ -129,8 +129,8 @@ class TaggedLoggingTest < ActiveSupport::TestCase
     end
 
     first_log = JSON.parse(@output.string.split("\n").first)
-    assert first_log['@tags'].empty?
-    assert_equal "Cool story bro", first_log['@message']
+    assert first_log['tags'].empty?
+    assert_equal "Cool story bro", first_log['message']
   end
 
 
@@ -141,15 +141,13 @@ class TaggedLoggingTest < ActiveSupport::TestCase
     end
 
     first_log = JSON.parse(@output.string.split("\n").first)
-    assert_equal "BCX", first_log['@tags'][0]
-    assert_equal "Jason", first_log['@tags'][1]
-    assert_equal "Funky time", first_log['@message']
+    assert_equal "BCX", first_log['tags'][0]
+    assert_equal "Jason", first_log['tags'][1]
+    assert_equal "Funky time", first_log['message']
 
     second_log = JSON.parse(@output.string.split("\n").last)
-    assert_equal "BCX", second_log['@tags'][0]
-    assert_equal "Junky time!", second_log['@message']
+    assert_equal "BCX", second_log['tags'][0]
+    assert_equal "Junky time!", second_log['message']
   end
 
 end
-
-

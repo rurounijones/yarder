@@ -5,7 +5,7 @@ module Yarder
       def request(event)
 
         #TODO Think of a better name for this!
-        entry.fields['active_resource'] ||= []
+        entry['active_resource'] ||= []
 
         request_entry = {}
 
@@ -19,7 +19,7 @@ module Yarder
         request_entry['length'] = result.body.to_s.length
         request_entry['duration'] = event.duration
 
-        entry.fields['active_resource'] << request_entry
+        entry['active_resource'] << request_entry
       end
 
     private
@@ -31,4 +31,3 @@ module Yarder
     end
   end
 end
-
