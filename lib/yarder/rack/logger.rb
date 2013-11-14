@@ -31,7 +31,7 @@ module Yarder
 
       ensure
         if event
-          event['total_duration'] = Time.now - t1
+          event['total_duration'] = (Time.now - t1)*1000
           event['status'] = status
 
           ['rendering','sql'].each do |type|
