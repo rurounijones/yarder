@@ -35,9 +35,9 @@ module Yarder
           event.fields['status'] = status
 
           ['rendering','sql'].each do |type|
-            if event[type] && !event[type].empty?
-              duration = event[type].inject(0) {|result, local_event| result += local_event['duration'].to_f }
-              event["#{type}_duration"] = duration
+            if event.fields[type] && !event.fields[type].empty?
+              duration = event.fields[type].inject(0) {|result, local_event| result += local_event['duration'].to_f }
+              event.fields["#{type}_duration"] = duration
             end
           end
 
