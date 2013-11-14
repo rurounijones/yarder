@@ -39,12 +39,8 @@ class LoggerTest < ActiveSupport::IntegrationCase
     assert entry['total_duration'].to_f >= 0, "total_duration was not a positive number"
   end
 
-  test 'fills in the rendering_duration' do
-    assert entry['rendering_duration'].to_f >= 0, "rendering_duration was not a positive number"
-  end
-
   test 'fills in the sql_duration' do
-    assert entry['rendering_duration'].to_f >= 0, "sql_duration was not a positive number"
+    assert entry['sql_duration'].to_f >= 0, "sql_duration was not a positive number"
   end
 
   test 'fills in the method name tag' do
@@ -59,7 +55,20 @@ class LoggerTest < ActiveSupport::IntegrationCase
     assert_match "Proc", entry['tags'].last
   end
 
-  #TODO Add tests for view and SQL rendering summaries
+  test 'fills in the sql quer' do
+    assert entry['sql'].last['sql'], '"SELECT "widgets".* FROM "widgets"'
+  end
+
+=begin TODO Add tests for view rendering
+  test 'fills in the rendering' do
+    assert_present entry['rendering'] , "rendering is blank"
+  end
+
+  test 'fills in the rendering_duration' do
+    assert_present entry['rendering_duration'] , "rendering_duration is blank"
+    assert Float(entry['rendering_duration']) >= 0, "rendering_duration was not a positive number"
+  end
+=end
 
   def entry
     JSON.parse(@output.string)
