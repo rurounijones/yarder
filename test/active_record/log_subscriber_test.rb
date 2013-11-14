@@ -24,14 +24,14 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
     CreateWidgets.down
     CreateWidgets.up
     wait
-    assert_blank @log_entry['sql']
+    assert_blank @log_entry.fields['sql']
   end
 
   def test_mandatory_fields_present
     Widget.find(1)
     wait
-    assert_present @log_entry['sql']
-    assert_present @log_entry['sql'].first['duration']
+    assert_present @log_entry.fields['sql']
+    assert_present @log_entry.fields['sql'].first['duration']
   end
 
   def test_sql_fields_present
@@ -74,7 +74,7 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
     ::ActiveRecord::Base.logger.level = Logger::INFO
     Widget.all
     wait
-    assert_blank @log_entry['sql']
+    assert_blank @log_entry.fields['sql']
   end
 
   def test_cached_queries_doesnt_log_when_level_is_not_debug
@@ -84,13 +84,13 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
       Widget.all
     end
     wait
-    assert_blank @log_entry['sql']
+    assert_blank @log_entry.fields['sql']
   end
 
   private
 
   def sql_entry
-    @sql_entry ||= @log_entry['sql'].last
+    @sql_entry ||= @log_entry.fields['sql'].last
   end
 
 end

@@ -28,6 +28,7 @@ module Yarder
         end
         @entry['severity'] = severity
         @entry['tags'] ||= []
+
         process_tags(current_tags)
         process_tags(current_request_tags)
         #TODO Should we do anything with progname? What about source?
@@ -55,7 +56,7 @@ module Yarder
         tags.each do |tag|
           if tag.class == Hash
             tag.each_pair do |k,v|
-              @entry[k] = v
+              @entry.fields[k] = v
             end
           else
             @entry['tags'] << tag

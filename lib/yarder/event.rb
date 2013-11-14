@@ -37,6 +37,10 @@ module Yarder
 
       @logger.push_request_tags(tag_hash)
     end
+
+    def fields
+      @fields ||= (@logstash_event['fields'] ||= {})
+    end
   end
 
 end

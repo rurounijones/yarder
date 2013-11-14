@@ -24,19 +24,19 @@ class AResourceLogSubscriberTest < ActiveSupport::TestCase
   def test_mandatory_fields_present
     Person.find(1)
     wait
-    assert_present @log_entry['active_resource']
-    assert_present @log_entry['active_resource'].first['duration']
+    assert_present @log_entry.fields['active_resource']
+    assert_present @log_entry.fields['active_resource'].first['duration']
   end
 
   def test_request_notification
     Person.find(1)
     wait
 
-    assert_equal "GET",  @log_entry['active_resource'].first['method']
-    assert_equal "http://37s.sunrise.i:3000/people/1.json", @log_entry['active_resource'].first['uri']
-    assert_equal 200,  @log_entry['active_resource'].first['code']
-    assert_equal "200",  @log_entry['active_resource'].first['message']
-    assert_equal 33,  @log_entry['active_resource'].first['length']
+    assert_equal "GET",  @log_entry.fields['active_resource'].first['method']
+    assert_equal "http://37s.sunrise.i:3000/people/1.json", @log_entry.fields['active_resource'].first['uri']
+    assert_equal 200,  @log_entry.fields['active_resource'].first['code']
+    assert_equal "200",  @log_entry.fields['active_resource'].first['message']
+    assert_equal 33,  @log_entry.fields['active_resource'].first['length']
   end
 
 end

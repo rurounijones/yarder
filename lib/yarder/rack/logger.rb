@@ -15,12 +15,12 @@ module Yarder
 
         event = Yarder::Event.new(Rails.logger, true)
         event['message'] = "#{request.request_method} #{request.filtered_path} for #{request.ip}"
-        event['client_ip'] = request.ip
-        event['method'] = request.request_method
-        event['path'] = request.filtered_path
+        event.fields['client_ip'] = request.ip
+        event.fields['method'] = request.request_method
+        event.fields['path'] = request.filtered_path
         #TODO Should really move this into the base logger
-        event['source'] = "http://#{Socket.gethostname}#{request.filtered_path}"
-        event['type'] = "rails_json_log"
+        event.fields['source'] = "http://#{Socket.gethostname}#{request.filtered_path}"
+        event.fields['type'] = "rails_json_log"
 
         event.add_tags_to_logger(request, @tags) if @tags
 
@@ -31,8 +31,8 @@ module Yarder
 
       ensure
         if event
-          event['total_duration'] = (Time.now - t1)*1000
-          event['status'] = status
+          event.fields['total_duration'] = (Time.now - t1)*1000
+          event.fields['status'] = status
 
           ['rendering','sql'].each do |type|
             if event[type] && !event[type].empty?
