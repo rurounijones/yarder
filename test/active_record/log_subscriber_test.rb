@@ -20,6 +20,12 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
   # TODO
   #def test_schema_statements_are_ignored
   #end
+  def test_schema_statements_are_ignored
+    CreateWidgets.down
+    CreateWidgets.up
+    wait
+    assert_blank @log_entry['sql']
+  end
 
   def test_mandatory_fields_present
     Widget.find(1)
