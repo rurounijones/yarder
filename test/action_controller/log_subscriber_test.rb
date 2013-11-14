@@ -144,20 +144,18 @@ class ACLogSubscriberTest < ActionController::TestCase
     LogSubscribersController.config.perform_caching = true
   end
 
-=begin TODO Figure out why this last test fails.
   def test_with_page_cache
     @controller.config.perform_caching = true
     get :with_page_cache
     wait
 
-   assert_present @log_entry['cache']
+    assert_present @log_entry['cache']
 
-    assert_match('Write page', @log_entry['cache'][1]['type'])
-    assert_match('index.html', @log_entry['cache'][1]['key_or_path'])
+    assert_match('Write page', @log_entry['cache'].first['type'])
+    assert_match('index.html', @log_entry['cache'].first['key_or_path'])
   ensure
     @controller.config.perform_caching = true
   end
-=end
 
   def logs
     @logs ||= @logger.logged(:info)
