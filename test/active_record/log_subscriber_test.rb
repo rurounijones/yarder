@@ -6,10 +6,15 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
 
   def setup
     super
+    @log_level = ::ActiveRecord::Base.logger.level
     Widget.create
     Yarder::ActiveRecord::LogSubscriber.attach_to :active_record
     Yarder.log_entries[Thread.current] = LogStash::Event.new
     @log_entry = Yarder.log_entries[Thread.current]
+  end
+
+  def teardown
+    ::ActiveRecord::Base.logger.level = @log_level
   end
 
   # TODO
@@ -58,18 +63,16 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
     assert_match(/SELECT .*?FROM .?widgets.?/i, sql_entry['sql'])
   end
 
-=begin
-  #TODO Get these done when the new logger is written
+
   def test_basic_query_doesnt_log_when_level_is_not_debug
-    @logger.level = Logger::INFO
+    ::ActiveRecord::Base.logger.level = Logger::INFO
     Widget.all
     wait
     assert_blank @log_entry['sql']
   end
 
-
   def test_cached_queries_doesnt_log_when_level_is_not_debug
-    @logger.level = INFO
+    ::ActiveRecord::Base.logger.level = Logger::INFO
     ActiveRecord::Base.cache do
       Widget.all
       Widget.all
@@ -77,7 +80,7 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
     wait
     assert_blank @log_entry['sql']
   end
-=end
+
   private
 
   def sql_entry
