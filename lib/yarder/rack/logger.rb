@@ -14,10 +14,12 @@ module Yarder
         request = ActionDispatch::Request.new(env)
 
         event = Yarder::Event.create Rails.logger, tags(request), true
-        event.fields['message'] = "#{request.request_method} #{request.filtered_path} for #{request.ip}"
-        event.fields['client_ip'] = request.ip
-        event.fields['method'] = request.request_method
-        event.fields['path'] = request.filtered_path
+        event['message'] = "#{request.request_method} #{request.filtered_path} for #{request.ip}"
+
+        entry = (event.fields['rack'] ||= {})
+        entry['client_ip'] = request.ip
+        entry['method'] = request.request_method
+        entry['path'] = request.filtered_path
 
         Yarder.log_entries[Thread.current] = event
 
@@ -25,8 +27,8 @@ module Yarder
         [status, headers, response]
       ensure
         if event
+          entry['status'] = status
           event.fields['duration']['total'] = (Time.now - t1)*1000
-          event.fields['status'] = status
           event.write(true)
         end
 
