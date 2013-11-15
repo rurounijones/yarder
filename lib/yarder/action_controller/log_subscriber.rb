@@ -11,10 +11,7 @@ module Yarder
         entry['name'] = payload[:controller]
         entry['action'] = payload[:action]
         entry['path'] = payload[:path]
-
-        format  = payload[:format]
-        entry['format']  = format.to_s.downcase if format.is_a?(Symbol)
-
+        entry['format']  = payload[:format].to_s.downcase
       end
 
       def process_action(event)
