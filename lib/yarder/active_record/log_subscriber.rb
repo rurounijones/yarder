@@ -74,7 +74,13 @@ module Yarder
       end
 
       def log_entry
-        Yarder.log_entries[Thread.current] || Yarder::Event.new(Rails.logger, false)
+        Yarder.log_entries[Thread.current] || Yarder::Event.create(Rails.logger, tags)
+      end
+
+      def tags
+        if log_tags = Rails.configuration.log_tags
+          log_tags.select{|tag| tag.is_a? String}
+        end
       end
 
     end

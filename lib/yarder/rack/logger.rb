@@ -13,13 +13,11 @@ module Yarder
         t1 = Time.now
         request = ActionDispatch::Request.new(env)
 
-        event = Yarder::Event.new(Rails.logger, true)
+        event = Yarder::Event.create Rails.logger, tags(request), true
         event['message'] = "#{request.request_method} #{request.filtered_path} for #{request.ip}"
         event.fields['client_ip'] = request.ip
         event.fields['method'] = request.request_method
         event.fields['path'] = request.filtered_path
-
-        event.add_tags_to_logger(request, @tags) if @tags
 
         Yarder.log_entries[Thread.current] = event
 
@@ -42,6 +40,20 @@ module Yarder
         end
 
         Yarder.log_entries[Thread.current] = nil
+      end
+
+      def tags(request)
+        return unless @tags
+        @tags.reduce([]) do |arr, tag|
+          case tag
+          when Symbol
+            arr << {tag.to_s => request.send(tag) }
+          when Proc
+            arr << tag.call(request)
+          else
+            arr << tag
+          end
+        end
       end
 
     end

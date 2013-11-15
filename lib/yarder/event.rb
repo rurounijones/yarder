@@ -23,22 +23,9 @@ module Yarder
       end
     end
 
-    def add_tags_to_logger(request, tags)
-      tag_hash = []
-      if tags
-        tags.each do |tag|
-          case tag
-          when Symbol
-            tag_hash << {tag.to_s => request.send(tag) }
-          when Proc
-            tag_hash << tag.call(request)
-          else
-            tag_hash << tag
-          end
-        end
-      end
-
-      @logger.push_request_tags(tag_hash)
+    def self.create(logger, tags, rack = false)
+      logger.push_request_tags(tags) if tags
+      new(logger, rack)
     end
 
     def fields

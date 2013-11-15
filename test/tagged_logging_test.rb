@@ -96,7 +96,7 @@ class TaggedLoggingTest < ActiveSupport::TestCase
 
   test "tagged once with blank and nil" do
     @logger.tagged(nil, "", "New") { @logger.info "Funky time" }
-    assert_equal "New", JSON.parse(@output.string)['tags'].last
+    assert_equal "New", JSON.parse(@output.string)['tags'].first
   end
 
   test "keeps each tag in their own thread" do

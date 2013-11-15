@@ -7,19 +7,16 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
   def setup
     super
     @log_level = ::ActiveRecord::Base.logger.level
+    @log_entry = Yarder::Event.create(Rails.logger, ['Hello'])
     Widget.create
     Yarder::ActiveRecord::LogSubscriber.attach_to :active_record
-    Yarder.log_entries[Thread.current] = LogStash::Event.new
-    @log_entry = Yarder.log_entries[Thread.current]
+    Yarder.log_entries[Thread.current] = @log_entry
   end
 
   def teardown
     ::ActiveRecord::Base.logger.level = @log_level
   end
 
-  # TODO
-  #def test_schema_statements_are_ignored
-  #end
   def test_schema_statements_are_ignored
     CreateWidgets.down
     CreateWidgets.up
@@ -41,6 +38,12 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
     assert_present sql_entry['name']
     assert_present sql_entry['sql']
     assert sql_entry['duration'].to_f >= 0, "sql_duration was not a positive number"
+  end
+
+  def test_tag_field_present
+    Widget.find(1)
+    wait
+    assert_present @log_entry['tags']
   end
 
   def test_basic_query_logging
