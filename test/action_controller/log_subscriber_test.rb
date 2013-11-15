@@ -28,11 +28,12 @@ class ACLogSubscriberTest < ActionController::TestCase
   end
 
   def test_start_processing
-    get :show, {:test => 'test'}
+    get :show, {:attr => 'test'}
     wait
 
     assert_equal "LogSubscribersController", @log_entry.fields['controller']['name']
     assert_equal "show", @log_entry.fields['controller']['action']
+    assert_equal "/show?attr=test", @log_entry.fields['controller']['path']
     assert_equal "html", @log_entry.fields['controller']['format']
   end
 
