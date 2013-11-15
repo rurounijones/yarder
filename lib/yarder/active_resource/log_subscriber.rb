@@ -3,12 +3,7 @@ module Yarder
     class LogSubscriber < ::ActiveSupport::LogSubscriber
 
       def request(event)
-
-        #TODO Think of a better name for this!
-        entry['active_resource'] ||= []
-
         request_entry = {}
-
         request_entry['method'] = event.payload[:method].to_s.upcase
         request_entry['uri'] = event.payload[:request_uri]
 
@@ -19,7 +14,12 @@ module Yarder
         request_entry['length'] = result.body.to_s.length
         request_entry['duration'] = event.duration
 
-        entry['active_resource'] << request_entry
+        entry.fields['rest'] ||= []
+        entry.fields['rest'] << request_entry
+
+        entry.fields['duration'] ||= {}
+        entry.fields['duration']['rest'] ||= 0
+        entry.fields['duration']['rest'] += event.duration.to_f
       end
 
     private
