@@ -15,6 +15,7 @@ module Yarder
       self['tags'] ||= []
       self.fields['duration'] = {}
       self.fields['source_host'] = logger.source_host
+      self.fields['env'] = logger.env
     end
 
     def write(rack = false)

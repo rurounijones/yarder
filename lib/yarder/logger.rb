@@ -52,6 +52,16 @@ module Yarder
       @source_host ||= Socket.gethostname
     end
 
+    def env
+      @env ||= {
+        :ruby => "#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL}",
+        :env => Rails.env,
+        :pwd => Dir.pwd,
+        :program => $0,
+        :user => ENV['USER'],
+      }
+    end
+
     # Simple formatter which only displays the message.
     class SimpleFormatter < ::Logger::Formatter
       # This method is invoked when a log event occurs
