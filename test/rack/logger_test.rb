@@ -37,19 +37,22 @@ class LoggerTest < ActiveSupport::IntegrationCase
   end
 
   test 'fills in the total_duration' do
-    assert entry['rack']['total_duration'].to_f >= 0, "total_duration was not a positive number"
+    assert entry['rack']['duration']['total'].to_f > 0, "total duration was not a positive number"
   end
 
   test 'total_duration is greater than sql_duration' do
-    assert entry['rack']['total_duration'].to_f >= entry['rack']['sql_duration'].to_f, "total_duration is less than sql_duration"
+    duration = entry['rack']['duration']
+    assert duration['total'].to_f >= duration['sql'].to_f, "total duration is less than sql duration"
   end
 
   test 'total_duration is greater than controller_duration' do
-    assert entry['rack']['total_duration'].to_f >= entry['rack']['controller_duration'].to_f, "total_duration is less than controller_duration"
+    duration = entry['rack']['duration']
+    assert entry['rack']['duration']['total'].to_f >= duration['controller'].to_f, "total_duration is less than controller_duration"
   end
 
   test 'fills in the sql_duration' do
-    assert entry['rack']['sql_duration'].to_f >= 0, "sql_duration was not a positive number"
+    duration = entry['rack']['duration']
+    assert duration['sql'].to_f >= 0, "sql_duration was not a positive number"
   end
 
   test 'fills in the method name tag' do

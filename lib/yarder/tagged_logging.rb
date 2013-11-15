@@ -27,7 +27,6 @@ module Yarder
           @entry['message'] = msg
         end
         @entry['severity'] = severity
-        @entry['tags'] ||= []
 
         process_tags(current_tags)
         process_tags(current_request_tags)

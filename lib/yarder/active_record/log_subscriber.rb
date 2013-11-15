@@ -66,6 +66,10 @@ module Yarder
         entry = log_entry
         entry.fields['sql'] ||= []
         entry.fields['sql'] << sql_entry
+
+        entry.fields['duration'] ||= {}
+        entry.fields['duration']['sql'] ||= 0
+        entry.fields['duration']['sql'] += sql_entry['duration'].to_f
         entry.write(false)
       end
 

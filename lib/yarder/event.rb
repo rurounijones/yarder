@@ -12,6 +12,8 @@ module Yarder
       @logstash_event = LogStash::Event.new
 
       self['type'] = logger.log_type
+      self['tags'] ||= []
+      self.fields['duration'] = {}
       self.fields['source_host'] = logger.source_host
     end
 

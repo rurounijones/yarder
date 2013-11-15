@@ -48,7 +48,7 @@ class ACLogSubscriberTest < ActionController::TestCase
     get :show
     wait
 
-    assert_present @log_entry.fields['controller_duration']
+    assert_present @log_entry.fields['duration']['controller']
   end
 
   def test_process_action_without_parameters
@@ -99,7 +99,7 @@ class ACLogSubscriberTest < ActionController::TestCase
     wait
 
     assert_equal 'file.txt', @log_entry.fields['send_data']
-    assert_present @log_entry.fields['send_data_duration']
+    assert_present @log_entry.fields['duration']['send_data']
   end
 
 
@@ -108,7 +108,7 @@ class ACLogSubscriberTest < ActionController::TestCase
     wait
 
     assert_match 'test/dummy/public/favicon.ico', @log_entry.fields['send_file']
-    assert_present @log_entry.fields['send_file_duration']
+    assert_present @log_entry.fields['duration']['send_file']
   end
 
   def test_with_fragment_cache

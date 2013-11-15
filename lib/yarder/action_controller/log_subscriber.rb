@@ -25,7 +25,8 @@ module Yarder
         params = payload[:params].except(*INTERNAL_PARAMS)
         entry.fields['parameters'] = params unless params.empty?
 
-        entry.fields['controller_duration'] = event.duration
+        entry.fields['duration'] ||= {}
+        entry.fields['duration']['controller'] = event.duration
 
         #TODO  What on earth are additions and how should we handle them?
         # message << " (#{additions.join(" | ")})" unless additions.blank?
@@ -38,7 +39,8 @@ module Yarder
 
       def send_file(event)
         entry.fields['send_file'] = event.payload[:path]
-        entry.fields['send_file_duration'] = event.duration
+        entry.fields['duration'] ||= {}
+        entry.fields['duration']['send_file'] = event.duration
       end
 
       def redirect_to(event)
@@ -47,7 +49,8 @@ module Yarder
 
       def send_data(event)
         entry.fields['send_data'] = event.payload[:filename]
-        entry.fields['send_data_duration'] = event.duration
+        entry.fields['duration'] ||= {}
+        entry.fields['duration']['send_data'] = event.duration
       end
 
       %w(write_fragment read_fragment exist_fragment?
@@ -60,6 +63,7 @@ module Yarder
             cache_event['type'] = #{method.to_s.humanize.inspect}
             cache_event['duration'] = event.duration
             entry.fields['cache'] << cache_event
+            entry.fields['duration']['cache'] = event.duration
           end
         METHOD
       end

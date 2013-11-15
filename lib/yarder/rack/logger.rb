@@ -14,7 +14,7 @@ module Yarder
         request = ActionDispatch::Request.new(env)
 
         event = Yarder::Event.create Rails.logger, tags(request), true
-        event['message'] = "#{request.request_method} #{request.filtered_path} for #{request.ip}"
+        event.fields['message'] = "#{request.request_method} #{request.filtered_path} for #{request.ip}"
         event.fields['client_ip'] = request.ip
         event.fields['method'] = request.request_method
         event.fields['path'] = request.filtered_path
@@ -23,19 +23,10 @@ module Yarder
 
         status, headers, response = @app.call(env)
         [status, headers, response]
-
       ensure
         if event
-          event.fields['total_duration'] = (Time.now - t1)*1000
+          event.fields['duration']['total'] = (Time.now - t1)*1000
           event.fields['status'] = status
-
-          ['rendering','sql'].each do |type|
-            if event.fields[type] && !event.fields[type].empty?
-              duration = event.fields[type].inject(0) {|result, local_event| result += local_event['duration'].to_f }
-              event.fields["#{type}_duration"] = duration
-            end
-          end
-
           event.write(true)
         end
 

@@ -11,8 +11,7 @@ class AVLogSubscriberTest < ActiveSupport::TestCase
     renderer = ActionView::Renderer.new(lookup_context)
     @view = ActionView::Base.new(renderer, {})
     Yarder::ActionView::LogSubscriber.attach_to :action_view
-    Yarder.log_entries[Thread.current] = LogStash::Event.new
-    @log_entry = Yarder.log_entries[Thread.current]
+    @log_entry = Yarder.log_entries[Thread.current] = LogStash::Event.new
   end
 
   def teardown
@@ -26,6 +25,15 @@ class AVLogSubscriberTest < ActiveSupport::TestCase
 
     assert_present @log_entry.fields['rendering']
     assert_present @log_entry.fields['rendering'].first['duration']
+  end
+
+  def test_total_rendering_duration_field_present
+    @view.render(:partial => "test/customer")
+    wait
+
+    duration = @log_entry.fields['duration']['rendering']
+    assert_present duration
+    assert Float(duration) >= 0, "[duration][rendering] was not a positive number"
   end
 
   def test_render_file_template

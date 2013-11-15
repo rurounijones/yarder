@@ -40,6 +40,14 @@ class ARecordLogSubscriberTest < ActiveSupport::TestCase
     assert sql_entry['duration'].to_f >= 0, "sql_duration was not a positive number"
   end
 
+  def test_sql_duration_field_present
+    Widget.find(1)
+    wait
+    duration = @log_entry.fields['duration']['sql']
+    assert_present duration
+    assert Float(duration) >= 0, "[duration][sql] was not a positive number"
+  end
+
   def test_tag_field_present
     Widget.find(1)
     wait
