@@ -39,7 +39,7 @@ module Yarder
     end
 
     def fields
-      @fields ||= (@logstash_event['fields'] ||= {})
+      @fields ||= (@logstash_event[@logger.log_namespace.to_s] ||= {})
     end
   end
 

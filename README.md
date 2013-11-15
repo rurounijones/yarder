@@ -57,7 +57,10 @@ module MyApp
 
     # Set a logger compatible with the standard ruby logger to be used by Yarder
     config.logger = Yarder::Logger.new(Rails.root.join('log',"#{Rails.env}.log").to_s)
-
+    # Logs AR SQL queries in debug level
+    config.logger.level = Logger::DEBUG
+    # Root name of nested logs, formerly known as :fields
+    config.logger.log_namespace = :rails
   end
 end
 ```

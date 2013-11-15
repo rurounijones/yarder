@@ -56,7 +56,7 @@ module Dummy
     # config.active_record.whitelist_attributes = true
 
     config.logger = Yarder::Logger.new(Rails.root.join('log',"#{Rails.env}.log").to_s)
-
+    config.logger.log_namespace = :dummy
     config.log_tags = ["Hello", :uuid, Proc.new { "Proc" }]
 
     # Enable the asset pipeline
@@ -66,4 +66,3 @@ module Dummy
     config.assets.version = '1.0'
   end
 end
-
