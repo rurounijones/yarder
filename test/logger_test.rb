@@ -72,16 +72,14 @@ class BufferedLoggerTest < ActiveSupport::TestCase
     assert @output.string.include?(@message)
   end
 
-  def test_source_host
-    assert_equal Socket.gethostname, @logger.source_host
-  end
-
   def test_env_should_have_data
     assert_present @logger.env[:ruby]
-    assert_present @logger.env[:env]
-    assert_present @logger.env[:pwd]
     assert_present @logger.env[:program]
     assert_present @logger.env[:user]
+
+    assert_equal Dir.pwd, @logger.env[:pwd]
+    assert_equal 'test', @logger.env[:env].to_s
+    assert_equal Socket.gethostname, @logger.env[:host]
   end
 
   def test_should_add_message_passed_as_block_when_using_shortcut

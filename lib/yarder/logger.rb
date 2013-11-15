@@ -48,10 +48,6 @@ module Yarder
       @formatter = SimpleFormatter.new
     end
 
-    def source_host
-      @source_host ||= Socket.gethostname
-    end
-
     def env
       @env ||= {
         :ruby => "#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL}",
@@ -59,6 +55,7 @@ module Yarder
         :pwd => Dir.pwd,
         :program => $0,
         :user => ENV['USER'],
+        :host => Socket.gethostname
       }
     end
 

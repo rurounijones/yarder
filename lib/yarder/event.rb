@@ -14,7 +14,6 @@ module Yarder
       self['type'] = logger.log_type
       self['tags'] ||= []
       self.fields['duration'] = {}
-      self.fields['source_host'] = logger.source_host
       self.fields['env'] = logger.env
     end
 
