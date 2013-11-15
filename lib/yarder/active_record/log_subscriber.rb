@@ -74,10 +74,7 @@ module Yarder
       end
 
       def log_entry
-        Yarder.log_entries[Thread.current] ||
-          Yarder::Event.new(Rails.logger, false).tap do |entry|
-          entry.fields['uuid'] = SecureRandom.uuid
-        end
+        Yarder.log_entries[Thread.current] || Yarder::Event.new(Rails.logger, false)
       end
 
     end
