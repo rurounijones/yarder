@@ -20,6 +20,7 @@ module Yarder
         entry['client_ip'] = request.ip
         entry['method'] = request.request_method
         entry['path'] = request.filtered_path
+        entry['url'] = request.url
 
         Yarder.log_entries[Thread.current] = event
 

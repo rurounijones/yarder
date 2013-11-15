@@ -32,6 +32,10 @@ class LoggerTest < ActiveSupport::IntegrationCase
     assert_equal "/widgets", entry['app']['rack']['path']
   end
 
+  test 'fills in the url' do
+    assert_equal "http://www.example.com/widgets", entry['app']['rack']['url']
+  end
+
   test 'fills in the status' do
     assert_equal "/widgets", entry['app']['rack']['path']
   end
