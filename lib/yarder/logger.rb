@@ -39,10 +39,11 @@ module Yarder
       end
     end
 
-    attr_accessor :log_namespace
+    attr_accessor :log_type, :log_namespace
 
     def initialize(*args)
       super
+      self.log_type = :rails_json_log
       self.log_namespace = :rails
       @formatter = SimpleFormatter.new
     end

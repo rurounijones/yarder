@@ -20,7 +20,6 @@ module Yarder
         event.fields['path'] = request.filtered_path
         #TODO Should really move this into the base logger
         event.fields['source'] = "http://#{Socket.gethostname}#{request.filtered_path}"
-        event.fields['type'] = "rails_json_log"
 
         event.add_tags_to_logger(request, @tags) if @tags
 

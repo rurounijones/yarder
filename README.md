@@ -61,15 +61,15 @@ module MyApp
     config.logger.level = Logger::DEBUG
     # Root name of nested logs, formerly known as :fields
     config.logger.log_namespace = :rails
+    # Logstash logtype
+    config.logger.log_type = :rails_json_log
   end
 end
 ```
 
 ## Logstash Configuration
 
-Yarder currently creates log entries with a hard-coded logtype of "rails_json_log" (This may change
-in future and may become configurable) therefore your Logstash configuration file should be as
-follows:
+Yarder currently creates log entries with default logtype of "rails_json_log" therefore your Logstash configuration file should be as follows:
 
 ```
 input {

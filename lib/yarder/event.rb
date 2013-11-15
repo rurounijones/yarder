@@ -10,6 +10,8 @@ module Yarder
       @logger = logger
       @rack = rack
       @logstash_event = LogStash::Event.new
+
+      self['type'] = logger.log_type
     end
 
     def write(rack = false)
