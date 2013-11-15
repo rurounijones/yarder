@@ -48,6 +48,10 @@ module Yarder
       @formatter = SimpleFormatter.new
     end
 
+    def source_host
+      @source_host ||= Socket.gethostname
+    end
+
     # Simple formatter which only displays the message.
     class SimpleFormatter < ::Logger::Formatter
       # This method is invoked when a log event occurs

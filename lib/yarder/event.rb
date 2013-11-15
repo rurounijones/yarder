@@ -12,6 +12,7 @@ module Yarder
       @logstash_event = LogStash::Event.new
 
       self['type'] = logger.log_type
+      self.fields['source_host'] = logger.source_host
     end
 
     def write(rack = false)
