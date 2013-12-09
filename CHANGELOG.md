@@ -1,8 +1,9 @@
 # 0.1.0 / 2013-12-9
 
 Add support for Logstash 1.2 and Kibana 3. This release brought to you by @ochko.
-This release is a breaking change to test before you update (which you should be doing anyway
-Since the gem is still 0.x.x version)
+This release is a breaking change so test before you update (which you should be doing anyway
+Since the gem is still 0.x.x version). You can continue using 0.0.2 if you are using older logstash
+and Kibana.
 
 * [UPDATE] Update logstash-event to 1.2 (@ochko)
 * [BUGFIX] Improve tests (@ochko)

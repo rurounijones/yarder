@@ -29,6 +29,9 @@ There may be issues regarding outputting UTF-8 characters in logs on JRuby 1.6 i
 Any help, feedback or pull-requests would be much appreciated, especially related to refactoring and
 test improvement
 
+Version 0.1.0 of this gem is designed for logstash 1.2 and Kibana version 3. If you are using an older
+version then it is probably best to stick with 0.0.2
+
 ## Installation
 
 Add this line to your Rails application's Gemfile:
