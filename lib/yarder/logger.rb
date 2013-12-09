@@ -1,4 +1,5 @@
 require 'logger'
+require 'socket'
 
 module Yarder
 
@@ -55,7 +56,7 @@ module Yarder
         :pwd => Dir.pwd,
         :program => $0,
         :user => ENV['USER'],
-        :host => Socket.gethostname
+        :host => ::Socket.gethostname
       }
     end
 
