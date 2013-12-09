@@ -16,7 +16,7 @@ gem 'jquery-rails'
 # To use debugger
 #gem 'debugger'
 
-gem 'logstash-event', '~>1.1.5'
+gem 'logstash-event', '~> 1.2.02'
 
 group :development, :test do
   gem 'simplecov', :require => false, :platform => :ruby
@@ -28,4 +28,3 @@ group :development, :test do
   gem 'coveralls', require: false
 
 end
-

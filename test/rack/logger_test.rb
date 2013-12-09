@@ -12,6 +12,7 @@ class LoggerTest < ActiveSupport::IntegrationCase
   setup do
     @output = StringIO.new
     Rails.logger = Yarder::TaggedLogging.new(MyLogger.new(@output))
+    Rails.logger.log_namespace = :app
     visit('/widgets')
   end
 
@@ -20,46 +21,70 @@ class LoggerTest < ActiveSupport::IntegrationCase
   end
 
   test 'fills in the client_ip' do
-    assert_equal "127.0.0.1", entry['@fields']['client_ip']
+    assert_equal "127.0.0.1", entry['app']['rack']['client_ip']
   end
 
   test 'fills in the method' do
-    assert_equal "GET", entry['@fields']['method']
+    assert_equal "GET", entry['app']['rack']['method']
   end
 
   test 'fills in the path' do
-    assert_equal "/widgets", entry['@fields']['path']
+    assert_equal "/widgets", entry['app']['rack']['path']
+  end
+
+  test 'fills in the url' do
+    assert_equal "http://www.example.com/widgets", entry['app']['rack']['url']
   end
 
   test 'fills in the status' do
-    assert_equal "/widgets", entry['@fields']['path']
+    assert_equal "/widgets", entry['app']['rack']['path']
   end
 
   test 'fills in the total_duration' do
-    assert entry['@fields']['total_duration'].to_f >= 0, "total_duration was not a positive number"
+    assert entry['app']['duration']['total'].to_f > 0, "total duration was not a positive number"
   end
 
-  test 'fills in the rendering_duration' do
-    assert entry['@fields']['rendering_duration'].to_f >= 0, "rendering_duration was not a positive number"
+  test 'total_duration is greater than sql_duration' do
+    duration = entry['app']['duration']
+    assert duration['total'].to_f >= duration['sql'].to_f, "total duration is less than sql duration"
+  end
+
+  test 'total_duration is greater than controller_duration' do
+    duration = entry['app']['duration']
+    assert entry['app']['duration']['total'].to_f >= duration['controller'].to_f, "total_duration is less than controller_duration"
   end
 
   test 'fills in the sql_duration' do
-    assert entry['@fields']['rendering_duration'].to_f >= 0, "sql_duration was not a positive number"
+    duration = entry['app']['duration']
+    assert duration['sql'].to_f >= 0, "sql_duration was not a positive number"
   end
 
   test 'fills in the method name tag' do
-    assert_equal 32, entry['@fields']['uuid'].size
+    assert_equal 32, entry['app']['uuid'].size
   end
 
   test 'fills in the string tag' do
-    assert_match "Hello", entry['@tags'].first
+    assert_match "Hello", entry['tags'].first
   end
 
   test 'fills in the proc tag' do
-    assert_match "Proc", entry['@tags'].last
+    assert_match "Proc", entry['tags'].last
   end
 
-  #TODO Add tests for view and SQL rendering summaries
+  test 'fills in the sql query' do
+    assert entry['app']['sql'].last['sql'], '"SELECT "widgets".* FROM "widgets"'
+  end
+
+=begin TODO Add tests for view rendering
+  test 'fills in the rendering' do
+    assert_present entry['app']['rack']['rendering'] , "rendering is blank"
+  end
+
+  test 'fills in the rendering_duration' do
+    assert_present entry['app']['rack']['rendering_duration'] , "rendering_duration is blank"
+    assert Float(entry['app']['rack']['rendering_duration']) >= 0, "rendering_duration was not a positive number"
+  end
+=end
 
   def entry
     JSON.parse(@output.string)

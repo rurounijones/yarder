@@ -39,9 +39,24 @@ module Yarder
       end
     end
 
+    attr_accessor :log_type, :log_namespace
+
     def initialize(*args)
       super
+      self.log_type = :rails_json_log
+      self.log_namespace = :rails
       @formatter = SimpleFormatter.new
+    end
+
+    def env
+      @env ||= {
+        :ruby => "#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL}",
+        :env => Rails.env,
+        :pwd => Dir.pwd,
+        :program => $0,
+        :user => ENV['USER'],
+        :host => Socket.gethostname
+      }
     end
 
     # Simple formatter which only displays the message.

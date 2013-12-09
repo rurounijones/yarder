@@ -66,6 +66,10 @@ module Yarder
         entry = log_entry
         entry.fields['sql'] ||= []
         entry.fields['sql'] << sql_entry
+
+        entry.fields['duration'] ||= {}
+        entry.fields['duration']['sql'] ||= 0
+        entry.fields['duration']['sql'] += sql_entry['duration'].to_f
         entry.write(false)
       end
 
@@ -74,12 +78,12 @@ module Yarder
       end
 
       def log_entry
-        Yarder.log_entries[Thread.current] ||
-          Yarder::Event.new(Rails.logger, false).tap do |entry|
-          entry.fields['uuid'] = SecureRandom.uuid
-          #TODO Should really move this into the base logger
-          entry.source = Socket.gethostname
-          entry.type = "rails_json_log"
+        Yarder.log_entries[Thread.current] || Yarder::Event.create(Rails.logger, tags)
+      end
+
+      def tags
+        if log_tags = Rails.configuration.log_tags
+          log_tags.select{|tag| tag.is_a? String}
         end
       end
 

@@ -24,9 +24,10 @@ module Yarder
           @entry = msg
         else
           @entry = Yarder::Event.new(Rails.logger)
-          @entry.message = msg
+          @entry['message'] = msg
         end
-        @entry.fields['severity'] = severity
+        @entry['severity'] = severity
+
         process_tags(current_tags)
         process_tags(current_request_tags)
         #TODO Should we do anything with progname? What about source?
@@ -57,7 +58,7 @@ module Yarder
               @entry.fields[k] = v
             end
           else
-            @entry.tags << tag
+            @entry['tags'] << tag
           end
         end
       end
